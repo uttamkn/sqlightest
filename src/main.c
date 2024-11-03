@@ -1,5 +1,5 @@
+#include "./include/dbinfo.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 int main(int argc, char *argv[]) {
@@ -18,17 +18,8 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    fseek(database_file, 16, SEEK_SET); // Skip the first 16 bytes of the header
-    unsigned char buffer[2];
-    fread(buffer, 1, 2, database_file);
-    unsigned short page_size = (buffer[1] | (buffer[0] << 8));
-
-    // You can use print statements as follows for debugging, they'll be visible
-    // when running tests.
-    fprintf(stderr, "Logs from your program will appear here!\n");
-
-    // Uncomment this to pass the first stage
-    printf("database page size: %u\n", page_size);
+    printf("database page size: %u\n", getPageSize(database_file));
+    printf("number of tables: %u\n", getNoOfTables(database_file));
 
     fclose(database_file);
   } else {
