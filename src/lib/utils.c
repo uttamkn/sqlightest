@@ -33,9 +33,8 @@ int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {
   return 0;
 }
 
-int *read_array_of_short(FILE *db, int offset, int size) {
-
-  int *output = (int *)malloc(sizeof(int) * size);
+short *read_array_of_shorts(FILE *db, int offset, short size) {
+  short *output = (short *)malloc(sizeof(short) * size);
   if (output == NULL) {
     perror("Failed to allocate memory");
     return NULL;
@@ -52,6 +51,29 @@ int *read_array_of_short(FILE *db, int offset, int size) {
     }
 
     output[i] = bytes_to_short(buffer);
+  }
+
+  return output;
+}
+
+short *read_array_of_byteInts(FILE *db, int offset, short size) {
+  short *output = (short *)malloc(sizeof(short) * size);
+  if (output == NULL) {
+    perror("Failed to allocate memory");
+    return NULL;
+  }
+
+  for (int i = 0; i < size; ++i) {
+    int current_offset = offset + i;
+
+    unsigned char buffer[1];
+    if (read_bytes(db, current_offset, 1, buffer) != 0) {
+      free(output);
+      perror("Failed to read the bytes");
+      return NULL;
+    }
+
+    output[i] = (short)buffer[0];
   }
 
   return output;
