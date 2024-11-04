@@ -22,6 +22,16 @@ int main(int argc, char *argv[]) {
     printf("number of tables: %u\n", getNoOfTables(database_file));
 
     fclose(database_file);
+  } else if (strcmp(command, ".tables") == 0) {
+    FILE *database_file = fopen(database_file_path, "rb");
+    if (!database_file) {
+      fprintf(stderr, "Failed to open the database file\n");
+      return 1;
+    }
+
+    /* printf("%s", getAllTables(database_file)); */
+
+    fclose(database_file);
   } else {
     fprintf(stderr, "Unknown command %s\n", command);
     return 1;

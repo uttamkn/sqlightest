@@ -1,5 +1,6 @@
 #include "../include/dbinfo.h"
-#include "../include/offset.h"
+#include "../include/constants.h"
+#include "../include/db_fileprocessor.h"
 #include "../include/utils.h"
 
 unsigned short getPageSize(FILE *database_file) {
@@ -9,20 +10,6 @@ unsigned short getPageSize(FILE *database_file) {
   }
 
   perror("Failed to read the page size");
-  return -1;
-}
-
-unsigned short getNoOfCells(FILE *database_file, int page_no) {
-  unsigned char buffer[2];
-
-  int current_page_offset = HEADER_SIZE + DEFAULT_PAGE_SIZE * (page_no - 1);
-
-  if (readBytes(database_file, current_page_offset + NO_OF_CELLS_OFFSET, 2,
-                buffer) == 0) {
-    return convertBytesToShort(buffer);
-  }
-
-  perror("Failed to read the number of cells");
   return -1;
 }
 
