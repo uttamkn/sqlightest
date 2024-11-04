@@ -1,10 +1,10 @@
-#include "./include/dbinfo.h"
+#include "./include/db_fileprocessor.h"
 #include <stdio.h>
 #include <string.h>
 
 int main(int argc, char *argv[]) {
   if (argc != 3) {
-    fprintf(stderr, "Usage: ./your_program.sh <database path> <command>\n");
+    fprintf(stderr, "Usage: ./run.sh <database path> <command>\n");
     return 1;
   }
 
@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    printf("database page size: %u\n", getPageSize(database_file));
-    printf("number of tables: %u\n", getNoOfTables(database_file));
+    printf("database page size: %u\n", get_page_size(database_file));
+    printf("number of tables: %u\n", get_no_of_tables(database_file));
 
     fclose(database_file);
   } else if (strcmp(command, ".tables") == 0) {
@@ -28,8 +28,6 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Failed to open the database file\n");
       return 1;
     }
-
-    /* printf("%s", getAllTables(database_file)); */
 
     fclose(database_file);
   } else {

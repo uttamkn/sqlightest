@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include <stdio.h>
 
-unsigned short convertBytesToShort(unsigned char *buffer);
-unsigned int convertBytesToInt(unsigned char *buffer);
-int readBytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer);
+unsigned short bytes_to_short(unsigned char *buffer);
+unsigned int bytes_to_int(unsigned char *buffer);
+int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer);
+int *read_array_of_short(FILE *db, int offset, int size);
 
 #endif // UTILS_H
