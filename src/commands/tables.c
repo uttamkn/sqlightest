@@ -1,9 +1,9 @@
-#include "../include/dbinfo.h"
-#include "../include/db_fileprocessor.h"
-#include "../include/utils.h"
+#include "cell.h"
+#include "column.h"
+#include "fileprocessor.h"
 #include <stdlib.h>
 
-void print_all_table_names(FILE *database_file) {
+void _print_all_table_names(FILE *database_file) {
   short no_of_cells = get_no_of_cells(database_file, 1);
   short *cell_offsets;
   get_cell_offsets(database_file, 1, &cell_offsets, no_of_cells);
@@ -12,7 +12,6 @@ void print_all_table_names(FILE *database_file) {
     return;
   }
 
-  printf("table names: ");
   for (short i = 0; i < no_of_cells; ++i) {
     int cell_offset = cell_offsets[i];
     short no_of_columns;
@@ -39,4 +38,8 @@ void print_all_table_names(FILE *database_file) {
   }
 
   free(cell_offsets);
+}
+
+void command_tables(FILE *database_file) {
+  _print_all_table_names(database_file);
 }

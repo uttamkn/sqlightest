@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-void print_all_table_names(FILE *database_file);
+void command_dbinfo(FILE *database_file);
 
 #endif // DBINFO_H
