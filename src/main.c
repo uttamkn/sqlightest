@@ -1,4 +1,5 @@
 #include "dbinfo.h"
+#include "query.h"
 #include "tables.h"
 #include <stdio.h>
 #include <string.h>
@@ -33,8 +34,15 @@ int main(int argc, char *argv[]) {
 
     fclose(database_file);
   } else {
-    fprintf(stderr, "Unknown command %s\n", command);
-    return 1;
+    FILE *database_file = fopen(database_file_path, "rb");
+    if (!database_file) {
+      fprintf(stderr, "Failed to open the database file\n");
+      return 1;
+    }
+
+    command_query(database_file, command);
+
+    fclose(database_file);
   }
 
   return 0;
