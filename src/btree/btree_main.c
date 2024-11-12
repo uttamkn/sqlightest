@@ -1,4 +1,4 @@
-#include "btree_main.h"
+#include "btree/btree_main.h"
 
 unsigned int get_no_of_tables(FILE *database_file) {
   // WARN: This function is not implemented properly yet (most of the time the

@@ -1,5 +1,5 @@
-#ifndef OFFSET_H
-#define OFFSET_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 #define HEADER_SIZE 100
 
@@ -17,4 +17,4 @@
 
 #define INDEX_BTREE_INTERIORCELL_HEADER 0x02
 
-#endif // OFFSET_H
+#endif // CONSTANTS_H

@@ -1,5 +1,5 @@
-#include "dbinfo.h"
-#include "btree_main.h"
+#include "commands/dbinfo.h"
+#include "btree/btree_main.h"
 
 void command_dbinfo(FILE *database_file) {
   printf("database page size: %u\n", get_page_size(database_file));
