@@ -1,7 +1,6 @@
-#include "dbinfo.h"
-#include "query.h"
-#include "tables.h"
-#include <stdio.h>
+#include "commands/dbinfo.h"
+#include "commands/sql.h"
+#include "commands/tables.h"
 #include <string.h>
 
 int main(int argc, char *argv[]) {
