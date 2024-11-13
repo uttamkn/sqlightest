@@ -7,11 +7,19 @@ typedef struct {
   char **fields;
 } Query;
 
+typedef enum {
+  stepStart,
+  stepSelectFields,
+  stepSelectFrom,
+  stepSelectComma,
+  stepSelectFromTable
+} Step;
+
 typedef struct {
   int i;           // Current position
   const char *sql; // The sql string that has to be parsed
   Query *query;
-  char *step; // Current step
+  Step step; // Current step
 } Parser;
 
 Query *parser_parse(Parser *p);
