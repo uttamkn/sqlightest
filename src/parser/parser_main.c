@@ -7,7 +7,7 @@
 // Static functions (private to this file)
 static int _step_start(Parser *p) {
   // TODO: Add other keywords (CREATE, INSERT etc)
-  if (tok_peek_and_compare_keyword(p, "SELECT", 6) == 0) {
+  if (tok_compare_keyword(p, "SELECT", 6) == 0) {
     p->i += 6;
     p->query->type = TYPE_SELECT;
     p->step = stepSelectFields;
@@ -60,7 +60,7 @@ Query *parser_parse(Parser *p) {
       break;
     }
     case stepSelectFrom: {
-      if (tok_peek_and_compare_keyword(p, "FROM", 4) == 0) {
+      if (tok_compare_keyword(p, "FROM", 4) == 0) {
         p->i += 4;
         p->step = stepSelectFromTable;
         if (tok_pop_space(p) != 0)
