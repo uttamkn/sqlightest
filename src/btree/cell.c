@@ -25,6 +25,6 @@ void get_cell_offsets(FILE *database_file, int page_no, short **output,
                                  no_of_cells);
 
   if (*output == NULL) {
-    fprintf(stderr, "Failed to get the cell offsets\n");
+    perror("Failed to get the cell offsets\n");
   }
 }

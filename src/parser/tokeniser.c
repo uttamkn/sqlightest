@@ -3,7 +3,7 @@
 
 int tok_pop_space(Parser *p) {
   if (p->sql[p->i] != ' ') {
-    fprintf(stderr, "Syntax error: expected a ' ' after the keyword");
+    fprintf(stderr, "Syntax error: expected a ' ' after the keyword\n");
     return -1;
   }
   while (p->sql[p->i] == ' ') {
@@ -15,12 +15,12 @@ int tok_pop_space(Parser *p) {
 
 int tok_compare_keyword(Parser *p, const char *keyword, int len) {
   if (!p || !keyword) {
-    fprintf(stderr, "no keyword to compare");
+    fprintf(stderr, "no keyword to compare\n");
     return -1;
   }
 
   if (p->i >= strlen(p->sql)) {
-    fprintf(stderr, "End of the sql string reached");
+    fprintf(stderr, "End of the sql string reached\n");
     return -1;
   }
 
@@ -29,7 +29,7 @@ int tok_compare_keyword(Parser *p, const char *keyword, int len) {
 
 int tok_peek_identifier(Parser *p) {
   if (p->sql[p->i] == ' ' || p->sql[p->i] == '\0') {
-    fprintf(stderr, "Syntax error: expected an identifier");
+    fprintf(stderr, "Syntax error: expected an identifier\n");
     return -1;
   }
 

@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   if (strcmp(command, ".dbinfo") == 0) {
     FILE *database_file = fopen(database_file_path, "rb");
     if (!database_file) {
-      fprintf(stderr, "Failed to open the database file\n");
+      perror("Failed to open the database file");
       return 1;
     }
 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
   } else if (strcmp(command, ".tables") == 0) {
     FILE *database_file = fopen(database_file_path, "rb");
     if (!database_file) {
-      fprintf(stderr, "Failed to open the database file\n");
+      perror("Failed to open the database file");
       return 1;
     }
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   } else {
     FILE *database_file = fopen(database_file_path, "rb");
     if (!database_file) {
-      fprintf(stderr, "Failed to open the database file\n");
+      perror("Failed to open the database file");
       return 1;
     }
 

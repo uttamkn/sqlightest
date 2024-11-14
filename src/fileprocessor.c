@@ -4,7 +4,7 @@
 
 int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {
   if (buffer == NULL) {
-    fprintf(stderr, "Buffer is NULL\n");
+    perror("Buffer is NULL");
     return -1;
   }
 
@@ -16,7 +16,7 @@ int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {
   size_t bytesRead = fread(buffer, 1, no_of_bytes, db);
   if (bytesRead < no_of_bytes) {
     if (feof(db)) {
-      fprintf(stderr, "End of file reached\n");
+      perror("End of file reached");
     } else if (ferror(db)) {
       perror("fread failed");
     }

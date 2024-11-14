@@ -15,7 +15,7 @@ static int _step_start(Parser *p) {
       return -1;
   } else {
     fprintf(stderr, "Syntax error: expected a 'SELECT' keyword others are not "
-                    "implemented yet");
+                    "implemented yet\n");
     return -1;
   }
 
@@ -49,7 +49,7 @@ Query *parser_parse(Parser *p) {
           return NULL;
       } else {
         fprintf(stderr, "Syntax error: expected a '*' keyword other "
-                        "keywords are not implemented yet");
+                        "keywords are not implemented yet\n");
         return NULL;
       }
       break;
@@ -66,7 +66,7 @@ Query *parser_parse(Parser *p) {
         if (tok_pop_space(p) != 0)
           return NULL;
       } else {
-        fprintf(stderr, "Syntax error: expected a 'FROM' keyword");
+        fprintf(stderr, "Syntax error: expected a 'FROM' keyword\n");
         return NULL;
       }
       break;
