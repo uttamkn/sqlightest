@@ -1,10 +1,20 @@
 #ifndef PARSER_MAIN_H
 #define PARSER_MAIN_H
 
+typedef enum {
+  TYPE_SELECT,
+  TYPE_CREATE,
+  TYPE_INSERT,
+  TYPE_DELETE,
+  TYPE_UPDATE
+} QueryType;
+
 typedef struct {
-  char *type; // Type of the query (SELECT, CREATE, INSERT etc)
+  QueryType type;
   char **tables;
+  int num_tables;
   char **fields;
+  int num_fields;
 } Query;
 
 typedef enum {
