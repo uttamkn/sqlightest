@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(sqlighter)
+project(sqlightest)
 
 set(CMAKE_C_STANDARD 23)
 
