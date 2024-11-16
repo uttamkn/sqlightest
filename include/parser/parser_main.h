@@ -1,6 +1,8 @@
 #ifndef PARSER_MAIN_H
 #define PARSER_MAIN_H
 
+#include <stdio.h>
+
 typedef enum {
   TYPE_SELECT,
   TYPE_CREATE,
@@ -22,12 +24,14 @@ typedef enum {
   stepSelectFields,
   stepSelectFrom,
   stepSelectComma,
-  stepSelectFromTable
+  stepSelectFromTable,
+  stepEnd
 } Step;
 
 typedef struct {
   int i;           // Current position
   const char *sql; // The sql string that has to be parsed
+  size_t sql_len;
   Query *query;
   Step step; // Current step
 } Parser;

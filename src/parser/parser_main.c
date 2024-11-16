@@ -1,6 +1,6 @@
 #include "parser/parser_main.h"
+#include "memory.h"
 #include "parser/tokeniser.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -27,9 +27,10 @@ Query *parser_parse(Parser *p) {
     perror("Parser is NULL");
     return NULL;
   }
-  int n = strlen(p->sql);
 
-  while (p->i < n) {
+  size_t field_len = 0;
+
+  while (p->i < p->sql_len) {
     switch (p->step) {
     case stepStart: {
       if (_step_start(p) != 0) {
@@ -38,24 +39,24 @@ Query *parser_parse(Parser *p) {
       break;
     }
     case stepSelectFields: {
-      // TODO: shift this to a separate tokeniser function (peek identifier)
-      if (p->sql[p->i] == '*') {
-        p->i += 1;
-        p->query->fields = realloc(p->query->fields,
-                                   (p->query->num_fields + 1) * sizeof(char *));
-        p->query->fields[p->query->num_fields++] = strdup("*");
-        p->step = stepSelectFrom;
-        if (tok_pop_space(p) != 0)
+      if ((field_len = tok_is_asterisk(p)) == 1) {
+        if (tok_peek_field(p, field_len) != 0) {
           return NULL;
+        }
+      } else if ((field_len = tok_is_identifier(p)) != -1) {
+        if (tok_peek_field(p, field_len) != 0) {
+          return NULL;
+        }
       } else {
-        fprintf(stderr, "Syntax error: expected a '*' keyword other "
-                        "keywords are not implemented yet\n");
+        fprintf(stderr, "Syntax error: expected an identifier\n");
         return NULL;
       }
       break;
     }
     case stepSelectComma: {
-      // TODO: implement the logic for comma separated fields and tables
+      p->i++;
+      tok_pop_optional_space(p);
+      p->step = stepSelectFields;
 
       break;
     }
@@ -72,13 +73,18 @@ Query *parser_parse(Parser *p) {
       break;
     }
     case stepSelectFromTable: {
-      // TODO: shift this to a separate tokeniser function (peek identifier)
-      p->query->tables = realloc(p->query->tables,
-                                 (p->query->num_tables + 1) * sizeof(char *));
-      p->query->tables[p->query->num_tables] = malloc(n - p->i + 1);
-      strcpy(p->query->tables[p->query->num_tables], p->sql + p->i);
-      p->i += n - p->i;
-      p->query->num_tables++;
+      int table_len = tok_is_identifier(p);
+      if (table_len == -1)
+        return NULL;
+
+      if (tok_peek_table(p, table_len) != 0) {
+        return NULL;
+      }
+
+      break;
+    }
+    case stepEnd: {
+      p->i = p->sql_len;
       break;
     }
     }
@@ -88,12 +94,7 @@ Query *parser_parse(Parser *p) {
 }
 
 Query *parser_new_query() {
-  Query *q = (Query *)malloc(sizeof(Query));
-  if (q == NULL) {
-    free(q);
-    perror("malloc failed while creating new Query struct");
-    return NULL;
-  }
+  Query *q = (Query *)mallox(sizeof(Query));
   q->fields = NULL;
   q->tables = NULL;
   q->num_fields = 0;
@@ -103,15 +104,19 @@ Query *parser_new_query() {
 }
 
 Parser *parser_new(const char *sql) {
-  Parser *p = malloc(sizeof(Parser));
-  if (p == NULL) {
-    perror("malloc failed while creating new parser");
-    return NULL;
+  int n = strlen(sql);
+
+  if (!sql || n == 0) {
+    fprintf(stderr, "SQL string is NULL\n");
+    exit(1);
   }
+
+  Parser *p = mallox(sizeof(Parser));
   p->i = 0;
   p->step = stepStart;
   p->query = parser_new_query();
   p->sql = sql;
+  p->sql_len = n;
   return p;
 }
 

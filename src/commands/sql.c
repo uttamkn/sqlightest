@@ -7,6 +7,7 @@ void command_query(FILE *database_file, const char *query) {
   Query *q = parser_parse(p);
 
   if (!q) {
+    parser_free(p);
     return;
   }
 
