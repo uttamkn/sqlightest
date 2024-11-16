@@ -58,3 +58,4 @@ build
 vcpkg_installed
 .clangd
 *.log
+.cache
