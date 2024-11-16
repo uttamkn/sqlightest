@@ -1,5 +1,6 @@
 #include "fileprocessor.h"
 #include "conversion.h"
+#include "memory.h"
 #include <stdlib.h>
 
 int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {
@@ -27,11 +28,7 @@ int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {
 }
 
 short *read_array_of_shorts(FILE *db, int offset, short size) {
-  short *output = (short *)malloc(sizeof(short) * size);
-  if (output == NULL) {
-    perror("Failed to allocate memory");
-    return NULL;
-  }
+  short *output = (short *)mallox(sizeof(short) * size);
 
   for (int i = 0; i < size; ++i) {
     int current_offset = offset + 2 * i;
@@ -50,11 +47,7 @@ short *read_array_of_shorts(FILE *db, int offset, short size) {
 }
 
 short *read_array_of_byteInts(FILE *db, int offset, short size) {
-  short *output = (short *)malloc(sizeof(short) * size);
-  if (output == NULL) {
-    perror("Failed to allocate memory");
-    return NULL;
-  }
+  short *output = (short *)mallox(sizeof(short) * size);
 
   for (int i = 0; i < size; ++i) {
     int current_offset = offset + i;

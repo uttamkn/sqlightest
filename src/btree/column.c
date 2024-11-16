@@ -1,5 +1,6 @@
 #include "btree/column.h"
 #include "fileprocessor.h"
+#include "memory.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -78,11 +79,7 @@ Column **get_columns_from_a_record(FILE *database_file, int offset,
   }
 
   *no_of_columns = (short)(buffer[0]) - 1;
-  Column **columns = (Column **)malloc(*no_of_columns * sizeof(Column *));
-  if (columns == NULL) {
-    perror("Failed to allocate memory for columns array");
-    return NULL;
-  }
+  Column **columns = (Column **)mallox(*no_of_columns * sizeof(Column *));
 
   for (short i = 0; i < *no_of_columns; ++i) {
     columns[i] = (Column *)malloc(sizeof(Column));
