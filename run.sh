@@ -8,4 +8,4 @@ set -e # Exit early if any commands fail
   cmake --build ./build
 )
 
-exec $(dirname $0)/build/sqlite "$@"
+exec valgrind $(dirname $0)/build/sqlite "$@"
