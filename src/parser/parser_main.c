@@ -6,13 +6,13 @@
 
 // Static functions (private to this file)
 static int _step_start(Parser *p) {
-  // TODO: Add other keywords (CREATE, INSERT etc)
+  // TODO: Add other keywords (INSERT, DELETE, CREATE, UPDATE etc)
+
   if (tok_compare_keyword(p, "SELECT", 6) == 0) {
-    p->i += 6;
-    p->query->type = TYPE_SELECT;
-    p->step = stepSelectFields;
-    if (tok_pop_space(p) != 0)
+    if (tok_peek_querytype(p, 6, TYPE_SELECT, stepSelectFields) != 0) {
+      fprintf(stderr, "Syntax error: missing ' ' after the query type\n");
       return -1;
+    }
   } else {
     fprintf(stderr, "Syntax error: expected a 'SELECT' keyword others are not "
                     "implemented yet\n");

@@ -13,6 +13,8 @@ int tok_validate_identifier(const char *identifier);
 int tok_is_asterisk(Parser *p);
 int tok_is_identifier(Parser *p);
 
+int tok_peek_querytype(Parser *p, size_t len, QueryType query_type,
+                       Step next_step);
 int tok_peek_field(Parser *p, size_t len);
 int tok_peek_table(Parser *p, size_t len);
 

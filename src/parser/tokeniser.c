@@ -17,7 +17,6 @@ static const char *keywords[] = {
 
 int tok_pop_space(Parser *p) {
   if (p->sql[p->i] != ' ') {
-    fprintf(stderr, "Syntax error: expected a ' ' after the keyword\n");
     return -1;
   }
   while (p->sql[p->i] == ' ') {
@@ -47,6 +46,18 @@ int tok_compare_keyword(Parser *p, const char *keyword, int len) {
   }
 
   return strncasecmp(p->sql + p->i, keyword, len);
+}
+
+// Store the query type and move to the next step
+int tok_peek_querytype(Parser *p, size_t len, QueryType query_type,
+                       Step next_step) {
+  p->i += len;
+  p->query->type = query_type;
+  p->step = next_step;
+  if (tok_pop_space(p) != 0)
+    return -1;
+
+  return 0;
 }
 
 int tok_is_asterisk(Parser *p) {
