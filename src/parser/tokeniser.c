@@ -1,5 +1,6 @@
 #include "parser/tokeniser.h"
 #include "memory.h"
+#include <regex.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -57,10 +58,37 @@ int tok_is_asterisk(Parser *p) {
   return p->sql[p->i] == '*';
 }
 
+// Returns 1 if the identifier is valid, 0 otherwise
+int tok_validate_identifier(const char *identifier) {
+  if (!identifier) {
+    fprintf(stderr, "Identifier is NULL\n");
+    return 0;
+  }
+
+  regex_t regex;
+  int ret;
+
+  ret = regcomp(&regex, "^[a-zA-Z_][a-zA-Z0-9_]*$", REG_EXTENDED);
+  if (ret) {
+    fprintf(stderr, "Failed to compile regex\n");
+    return 0;
+  }
+
+  ret = regexec(&regex, identifier, 0, NULL, 0);
+  regfree(&regex);
+
+  if (!ret) {
+    return 1; // match
+  } else if (ret == REG_NOMATCH) {
+    return 0; // no match
+  } else {
+    fprintf(stderr, "Regex matching failed\n");
+    return 0;
+  }
+}
+
 // Returns the length of the identifier
 int tok_is_identifier(Parser *p) {
-  // TODO: validate the identifier (no special characters, etc)
-
   if (p->i >= p->sql_len) {
     fprintf(stderr, "End of the sql string reached\n");
     return -1;
@@ -77,6 +105,18 @@ int tok_is_identifier(Parser *p) {
     len++;
   }
 
+  char *identifier = mallox(len + 1);
+
+  memcpy(identifier, p->sql + p->i, len);
+  identifier[len] = '\0';
+
+  if (tok_validate_identifier(identifier) == 0) {
+    fprintf(stderr, "Syntax error: invalid identifier\n");
+    free(identifier);
+    return -1;
+  }
+
+  free(identifier);
   // check if the identifier is a keyword
   for (int i = 0; keywords[i] != NULL; i++) {
     if (strncasecmp(p->sql + p->i, keywords[i], len) == 0) {
@@ -91,12 +131,15 @@ int tok_is_identifier(Parser *p) {
 
 // Store the field name and move to the next step
 int tok_peek_field(Parser *p, size_t len) {
-  p->query->fields =
-      reallox(p->query->fields, (p->query->num_fields + 1) * sizeof(char *));
+  p->query->fields = (char **)reallox(
+      p->query->fields, (p->query->num_fields + 1) * sizeof(char *));
 
-  p->query->fields[p->query->num_fields] = mallox(len * sizeof(char));
+  p->query->fields[p->query->num_fields] =
+      (char *)mallox((len + 1) * sizeof(char));
 
-  strncpy(p->query->fields[p->query->num_fields], p->sql + p->i, len);
+  memcpy(p->query->fields[p->query->num_fields], p->sql + p->i, len);
+  p->query->fields[p->query->num_fields][len] = '\0';
+
   p->query->num_fields++;
   p->i += len;
 
@@ -114,12 +157,15 @@ int tok_peek_field(Parser *p, size_t len) {
 
 // Store the table name and move to the next step
 int tok_peek_table(Parser *p, size_t len) {
-  p->query->tables =
-      reallox(p->query->tables, (p->query->num_tables + 1) * sizeof(char *));
+  p->query->tables = (char **)reallox(
+      p->query->tables, (p->query->num_tables + 1) * sizeof(char *));
 
-  p->query->tables[p->query->num_tables] = mallox(len * sizeof(char));
+  p->query->tables[p->query->num_tables] =
+      (char *)mallox((len + 1) * sizeof(char));
 
-  strncpy(p->query->tables[p->query->num_tables], p->sql + p->i, len);
+  memcpy(p->query->tables[p->query->num_tables], p->sql + p->i, len);
+  p->query->tables[p->query->num_tables][len] = '\0';
+
   p->query->num_tables++;
   p->i += len;
 
