@@ -127,7 +127,7 @@ void parser_print_query(const Query *q) {
     printf("Tables: NULL\n");
   } else {
     printf("Tables: ");
-    for (int i = 0; q->tables[i] != NULL; i++) {
+    for (int i = 0; i < q->num_tables; i++) {
       printf("%s ", q->tables[i]);
     }
     printf("\n");
@@ -137,7 +137,7 @@ void parser_print_query(const Query *q) {
     printf("Fields: NULL\n");
   } else {
     printf("Fields: ");
-    for (int i = 0; q->fields[i] != NULL; i++) {
+    for (int i = 0; i < q->num_fields; i++) {
       printf("%s ", q->fields[i]);
     }
     printf("\n");
