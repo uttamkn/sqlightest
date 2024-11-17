@@ -111,12 +111,13 @@ Parser *parser_new(const char *sql) {
     exit(1);
   }
 
-  Parser *p = mallox(sizeof(Parser));
+  Parser *p = (Parser *)mallox(sizeof(Parser));
   p->i = 0;
   p->step = stepStart;
   p->query = parser_new_query();
   p->sql = sql;
   p->sql_len = n;
+
   return p;
 }
 

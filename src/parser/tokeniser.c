@@ -36,12 +36,12 @@ int tok_pop_optional_space(Parser *p) {
 }
 
 int tok_compare_keyword(Parser *p, const char *keyword, int len) {
-  if (!p || !keyword) {
-    fprintf(stderr, "no keyword to compare\n");
+  if (!p) {
+    fprintf(stderr, "Parser is NULL\n");
     return -1;
   }
 
-  if (p->i >= p->sql_len) {
+  if (p->i >= p->sql_len || p->i + len > p->sql_len) {
     fprintf(stderr, "End of the sql string reached\n");
     return -1;
   }
@@ -117,6 +117,7 @@ int tok_is_identifier(Parser *p) {
   }
 
   free(identifier);
+
   // check if the identifier is a keyword
   for (int i = 0; keywords[i] != NULL; i++) {
     if (strncasecmp(p->sql + p->i, keywords[i], len) == 0) {
