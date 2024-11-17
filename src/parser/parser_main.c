@@ -90,6 +90,11 @@ Query *parser_parse(Parser *p) {
     }
   }
 
+  if (p->step != stepEnd) {
+    fprintf(stderr, "Syntax error: unexpected end of the SQL string\n");
+    return NULL;
+  }
+
   return p->query;
 }
 

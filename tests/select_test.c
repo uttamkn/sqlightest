@@ -108,7 +108,6 @@ int test_command_query_invalid_syntax() {
   return 0;
 }
 
-// WARN: this test is failing
 int test_command_query_extra_whitespace() {
   const char *query = "SELECT   name ,   age   FROM    users   ";
 

@@ -19,7 +19,7 @@ int tok_pop_space(Parser *p) {
   if (p->sql[p->i] != ' ') {
     return -1;
   }
-  while (p->sql[p->i] == ' ') {
+  while (p->i < p->sql_len && p->sql[p->i] == ' ') {
     p->i++;
   }
 
@@ -27,7 +27,7 @@ int tok_pop_space(Parser *p) {
 }
 
 int tok_pop_optional_space(Parser *p) {
-  while (p->sql[p->i] == ' ') {
+  while (p->i < p->sql_len && p->sql[p->i] == ' ') {
     p->i++;
   }
 
@@ -155,13 +155,14 @@ int tok_peek_field(Parser *p, size_t len) {
   p->query->num_fields++;
   p->i += len;
 
-  if (p->sql[p->i] == ',') {
+  tok_pop_optional_space(p);
+
+  if (p->i < p->sql_len && p->sql[p->i] == ',') {
     p->step = stepSelectComma;
     return 0;
   }
 
-  if (tok_pop_space(p) != 0)
-    return -1;
+  tok_pop_optional_space(p);
 
   p->step = stepSelectFrom;
   return 0;
