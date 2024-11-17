@@ -8,4 +8,13 @@ set -e # Exit early if any commands fail
   cmake --build ./build
 )
 
-exec valgrind $(dirname $0)/build/sqlite "$@"
+if [ "$1" = "test" ]; then
+  shift
+  (
+    cd "$(dirname "$0")/build"
+    ctest --verbose "$@"
+  )
+  exit 0
+fi
+
+exec valgrind "$(dirname "$0")/build/sqlite" "$@"
