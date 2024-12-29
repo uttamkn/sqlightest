@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-void command_query(FILE *database_file, const char *query);
+int command_query(FILE *database_file, const char *query);
 
 #endif // QUERY_H

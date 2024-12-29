@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-void command_tables(FILE *database_file);
+int command_tables(FILE *database_file);
 
 #endif // TABLES_H

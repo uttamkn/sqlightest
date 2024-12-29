@@ -6,6 +6,6 @@
 #include "page.h"
 #include <stdio.h>
 
-unsigned int get_no_of_tables(FILE *database_file);
+int get_no_of_tables(FILE *database_file);
 
 #endif // DB_FILEPROCESSOR_H

@@ -3,7 +3,7 @@
 #include "conversion.h"
 #include "fileprocessor.h"
 
-unsigned short get_page_size(FILE *database_file) {
+int get_page_size(FILE *database_file) {
   unsigned char buffer[2];
   if (read_bytes(database_file, PAGE_SIZE_OFFSET, 2, buffer) == 0) {
     return bytes_to_short(buffer);

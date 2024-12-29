@@ -2,47 +2,72 @@
 #include "commands/sql.h"
 #include "commands/tables.h"
 #include <string.h>
+#include <stdlib.h>
+
+typedef struct {
+    FILE *file;
+    const char *path;
+} DatabaseConnection;
+
+DatabaseConnection* open_database(const char *path) {
+    DatabaseConnection *db = malloc(sizeof(DatabaseConnection));
+    if (!db) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return NULL;
+    }
+    
+    db->file = fopen(path, "rb");
+    if (!db->file) {
+        fprintf(stderr, "Failed to open database file: %s\n", path);
+        free(db);
+        return NULL;
+    }
+    
+    db->path = path;
+    return db;
+}
+
+void close_database(DatabaseConnection *db) {
+    if (db) {
+        if (db->file) {
+            fclose(db->file);
+        }
+        free(db);
+    }
+}
+
+int execute_command(DatabaseConnection *db, const char *command) {
+    if (!db || !db->file) {
+        return -1;
+    }
+
+    if (strcmp(command, ".dbinfo") == 0) {
+         return command_dbinfo(db->file);
+    } 
+    else if (strcmp(command, ".tables") == 0) {
+         return command_tables(db->file);
+    }
+    else {
+         return command_query(db->file, command);
+    }
+
+    return 0;
+}
 
 int main(int argc, char *argv[]) {
-  if (argc != 3) {
-    fprintf(stderr, "Usage: ./run.sh <database path> <command>\n");
-    return 1;
-  }
-
-  const char *database_file_path = argv[1];
-  const char *command = argv[2];
-
-  if (strcmp(command, ".dbinfo") == 0) {
-    FILE *database_file = fopen(database_file_path, "rb");
-    if (!database_file) {
-      perror("Failed to open the database file");
-      return 1;
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <database path> <command>\n", argv[0]);
+        return 1;
     }
 
-    command_dbinfo(database_file);
-
-    fclose(database_file);
-  } else if (strcmp(command, ".tables") == 0) {
-    FILE *database_file = fopen(database_file_path, "rb");
-    if (!database_file) {
-      perror("Failed to open the database file");
-      return 1;
+    DatabaseConnection *db = open_database(argv[1]);
+    if (!db) {
+        return 1;
     }
 
-    command_tables(database_file);
+    int result = execute_command(db, argv[2]);
 
-    fclose(database_file);
-  } else {
-    FILE *database_file = fopen(database_file_path, "rb");
-    if (!database_file) {
-      perror("Failed to open the database file");
-      return 1;
-    }
+    close_database(db);
 
-    command_query(database_file, command);
-
-    fclose(database_file);
-  }
-
-  return 0;
+    return result;
 }
