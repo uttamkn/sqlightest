@@ -1,8 +1,8 @@
 #include "btree/cell.h"
 #include "btree/page.h"
-#include "constants.h"
-#include "conversion.h"
-#include "fileprocessor.h"
+#include "util/constants.h"
+#include "util/conversion.h"
+#include "util/fileprocessor.h"
 
 unsigned short get_no_of_cells(FILE *database_file, int page_no) {
   unsigned char buffer[2];

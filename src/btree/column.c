@@ -1,6 +1,6 @@
 #include "btree/column.h"
-#include "fileprocessor.h"
-#include "memory.h"
+#include "util/fileprocessor.h"
+#include "util/memory.h"
 #include <stdlib.h>
 #include <string.h>
 

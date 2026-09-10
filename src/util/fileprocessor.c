@@ -1,6 +1,6 @@
-#include "fileprocessor.h"
-#include "conversion.h"
-#include "memory.h"
+#include "util/fileprocessor.h"
+#include "util/conversion.h"
+#include "util/memory.h"
 #include <stdlib.h>
 
 int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {

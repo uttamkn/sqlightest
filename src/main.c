@@ -55,7 +55,7 @@ int execute_command(DatabaseConnection *db, const char *command) {
 int main(int argc, char *argv[]) {
   if (argc != 3) {
     fprintf(stderr, "Usage: %s <database path> <command>\n", argv[0]);
-    return 1;
+    return 0;
   }
 
   DatabaseConnection *db = open_database(argv[1]);

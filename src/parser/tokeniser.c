@@ -1,5 +1,5 @@
 #include "parser/tokeniser.h"
-#include "memory.h"
+#include "util/memory.h"
 #include <regex.h>
 #include <stdio.h>
 #include <string.h>

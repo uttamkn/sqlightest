@@ -1,6 +1,6 @@
 #include "parser/parser_main.h"
-#include "memory.h"
 #include "parser/tokeniser.h"
+#include "util/memory.h"
 #include <stdlib.h>
 #include <string.h>
 

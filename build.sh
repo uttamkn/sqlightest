@@ -17,4 +17,4 @@ if [ "$1" = "test" ]; then
   exit 0
 fi
 
-exec valgrind "$(dirname "$0")/build/sqlite" "$@"
+exec valgrind "$(dirname "$0")/build/sqlite"

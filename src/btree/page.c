@@ -1,7 +1,7 @@
 #include "btree/page.h"
-#include "constants.h"
-#include "conversion.h"
-#include "fileprocessor.h"
+#include "util/constants.h"
+#include "util/conversion.h"
+#include "util/fileprocessor.h"
 
 int get_page_size(FILE *database_file) {
   unsigned char buffer[2];

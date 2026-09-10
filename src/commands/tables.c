@@ -1,6 +1,6 @@
 #include "btree/cell.h"
 #include "btree/column.h"
-#include "fileprocessor.h"
+#include "util/fileprocessor.h"
 #include <stdlib.h>
 
 int _print_all_table_names(FILE *database_file) {
