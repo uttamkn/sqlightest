@@ -23,13 +23,14 @@ target_include_directories(
   PRIVATE ${SOURCE_DIR})
 
 # For unit tests
-file(GLOB TEST_FILES "${TESTS_DIR}/*.c")
-add_executable(sqlite_tests ${SOURCE_FILES} ${TEST_FILES})
+set(TEST_MAIN_FILE "${TESTS_DIR}/test_main.c")
+file(GLOB TEST_FILES CONFIGURE_DEPENDS "${TESTS_DIR}/*_test.c")
+add_executable(sqlite_tests ${SOURCE_FILES} ${TEST_MAIN_FILE} ${TEST_FILES})
 
 target_include_directories(
   sqlite_tests
   PUBLIC ${PUBLIC_INCLUDE_DIR}
-  PRIVATE ${SOURCE_DIR})
+  PRIVATE ${SOURCE_DIR} ${TESTS_DIR})
 
 enable_testing()
 add_test(NAME sqlite_tests COMMAND sqlite_tests)

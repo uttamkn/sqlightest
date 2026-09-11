@@ -4,7 +4,7 @@
 #include "util/fileprocessor.h"
 
 int get_page_size(FILE *database_file) {
-  unsigned char buffer[2];
+  unsigned char buffer[2]; // unsigned char is just 1 byte
   if (read_bytes(database_file, PAGE_SIZE_OFFSET, 2, buffer) == 0) {
     return bytes_to_short(buffer);
   }
@@ -15,8 +15,11 @@ int get_page_size(FILE *database_file) {
 
 int get_page_offset(int page_no) {
   int current_page_offset = 100; // offset for page 1
+  // TODO: Get the page size from the database file instead of using a constant.
+  // When i make the global state for the database file, I can store the page
+  // size in that state and use it here.
   if (page_no != 1) {
-    current_page_offset = DEFAULT_PAGE_SIZE * (page_no - 1);
+    current_page_offset += DEFAULT_PAGE_SIZE * (page_no - 1);
   }
 
   return current_page_offset;

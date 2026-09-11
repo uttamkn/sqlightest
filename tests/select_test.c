@@ -1,10 +1,11 @@
 #include "parser/parser_main.h"
+#include "test_suites.h"
 #include <stdio.h>
 #include <string.h>
 
-int validate_query(Query *q, QueryType expected_type,
-                   const char **expected_fields, int num_fields,
-                   const char *expected_table) {
+static int validate_query(Query *q, QueryType expected_type,
+                          const char **expected_fields, int num_fields,
+                          const char *expected_table) {
   if (!q) {
     fprintf(stderr, "Test failed: Query is NULL\n");
     return -1;
@@ -41,7 +42,7 @@ int validate_query(Query *q, QueryType expected_type,
   return 0;
 }
 
-int test_command_query_valid() {
+static int test_command_query_valid(void) {
   const char *query = "SELECT name, age FROM users";
 
   Parser *p = parser_new(query);
@@ -54,7 +55,7 @@ int test_command_query_valid() {
   return result;
 }
 
-int test_command_query_no_fields() {
+static int test_command_query_no_fields(void) {
   const char *query = "SELECT FROM users";
 
   Parser *p = parser_new(query);
@@ -72,7 +73,7 @@ int test_command_query_no_fields() {
   return 0;
 }
 
-int test_command_query_no_table() {
+static int test_command_query_no_table(void) {
   const char *query = "SELECT name, age";
 
   Parser *p = parser_new(query);
@@ -90,7 +91,7 @@ int test_command_query_no_table() {
   return 0;
 }
 
-int test_command_query_invalid_syntax() {
+static int test_command_query_invalid_syntax(void) {
   const char *query = "SEL name, age FROM users";
 
   Parser *p = parser_new(query);
@@ -108,7 +109,7 @@ int test_command_query_invalid_syntax() {
   return 0;
 }
 
-int test_command_query_extra_whitespace() {
+static int test_command_query_extra_whitespace(void) {
   const char *query = "SELECT   name ,   age   FROM    users   ";
 
   Parser *p = parser_new(query);
@@ -121,7 +122,7 @@ int test_command_query_extra_whitespace() {
   return result;
 }
 
-int main() {
+int run_select_tests(void) {
   int test_result = 0;
 
   test_result |= test_command_query_valid();
@@ -129,12 +130,6 @@ int main() {
   test_result |= test_command_query_no_table();
   test_result |= test_command_query_invalid_syntax();
   test_result |= test_command_query_extra_whitespace();
-
-  if (test_result == 0) {
-    printf("All tests passed\n");
-  } else {
-    printf("Some tests failed\n");
-  }
 
   return test_result;
 }

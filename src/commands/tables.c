@@ -5,6 +5,7 @@
 
 int _print_all_table_names(FILE *database_file) {
   short no_of_cells = get_no_of_cells(database_file, 1);
+
   short *cell_offsets;
   get_cell_offsets(database_file, 1, &cell_offsets, no_of_cells);
   if (cell_offsets == NULL) {

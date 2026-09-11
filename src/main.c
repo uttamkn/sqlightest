@@ -1,6 +1,7 @@
 #include "commands/dbinfo.h"
 #include "commands/sql.h"
 #include "commands/tables.h"
+#include "util/memory.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -10,11 +11,7 @@ typedef struct {
 } DatabaseConnection;
 
 DatabaseConnection *open_database(const char *path) {
-  DatabaseConnection *db = malloc(sizeof(DatabaseConnection));
-  if (!db) {
-    fprintf(stderr, "Memory allocation failed\n");
-    return NULL;
-  }
+  DatabaseConnection *db = mallox(sizeof(DatabaseConnection));
 
   db->file = fopen(path, "rb");
   if (!db->file) {
@@ -38,6 +35,7 @@ void close_database(DatabaseConnection *db) {
 
 int execute_command(DatabaseConnection *db, const char *command) {
   if (!db || !db->file) {
+    perror("DatabaseConnection not found");
     return -1;
   }
 

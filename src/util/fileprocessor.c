@@ -14,6 +14,7 @@ int read_bytes(FILE *db, int offset, int no_of_bytes, unsigned char *buffer) {
     return -1;
   }
 
+  // here 1 is the size of each item being read in bytes
   size_t bytesRead = fread(buffer, 1, no_of_bytes, db);
   if (bytesRead < no_of_bytes) {
     if (feof(db)) {
